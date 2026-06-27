@@ -11,16 +11,6 @@ npm install --prefer-offline --no-audit
 # Build frontend assets with Vite
 npm run build
 
-# Install PHP dependencies
-composer install --no-dev --optimize-autoloader
-
-# Clear Laravel cache
-php artisan config:clear
-php artisan cache:clear
-php artisan view:clear
-
-# Build Laravel config cache
-php artisan config:cache
-php artisan route:cache
+# Install PHP dependencies is handled automatically by vercel-php runtime
 
 echo "✓ Build completed successfully"
