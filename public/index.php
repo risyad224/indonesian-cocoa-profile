@@ -24,9 +24,7 @@ require __DIR__.'/../vendor/autoload.php';
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
 try {
-    $response = $app->handleRequest(Request::capture());
-    $response->send();
-    $app->terminate();
+    $app->handleRequest(Request::capture());
 } catch (\Throwable $e) {
     echo "<h1>Original Exception:</h1>";
     echo "<p><strong>Message:</strong> " . $e->getMessage() . "</p>";
