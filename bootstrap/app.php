@@ -17,7 +17,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
         //
     })->create();
 
-if (isset($_ENV['VERCEL']) || isset($_ENV['VERCEL_ENV']) || isset($_SERVER['VERCEL'])) {
+if (getenv('VERCEL') || getenv('VERCEL_ENV') || isset($_ENV['VERCEL']) || isset($_ENV['VERCEL_ENV']) || isset($_SERVER['VERCEL'])) {
     $app->useStoragePath('/tmp/storage');
     $app->useBootstrapPath('/tmp/storage/bootstrap');
     $directories = [
