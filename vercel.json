@@ -38,7 +38,9 @@
     "APP_CONFIG_CACHE": "/tmp/storage/bootstrap/cache/config.php",
     "APP_ROUTES_CACHE": "/tmp/storage/bootstrap/cache/routes.php",
     "APP_EVENTS_CACHE": "/tmp/storage/bootstrap/cache/events.php",
-    "VIEW_COMPILED_PATH": "/tmp/storage/framework/views"
+    "VIEW_COMPILED_PATH": "/tmp/storage/framework/views",
+    "SESSION_DRIVER": "cookie",
+    "CACHE_STORE": "file"
   },
   "build": {
     "env": {
