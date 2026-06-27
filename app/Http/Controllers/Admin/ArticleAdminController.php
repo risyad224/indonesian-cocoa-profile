@@ -37,7 +37,7 @@ class ArticleAdminController extends Controller
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $base64 = base64_encode(file_get_contents($file));
+            $base64 = base64_encode($file->get());
             $mime = $file->getClientMimeType();
             $data['image'] = "data:{$mime};base64,{$base64}";
         }
@@ -67,7 +67,7 @@ class ArticleAdminController extends Controller
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $base64 = base64_encode(file_get_contents($file));
+            $base64 = base64_encode($file->get());
             $mime = $file->getClientMimeType();
             $data['image'] = "data:{$mime};base64,{$base64}";
         } else {

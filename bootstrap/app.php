@@ -14,7 +14,9 @@ $app = Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->render(function (\Illuminate\Http\Exceptions\PostTooLargeException $e, $request) {
+            return back()->withInput()->with('error', 'File yang diupload terlalu besar! (Maksimal 2MB karena batasan serverless).');
+        });
     })->create();
 
 if (getenv('VERCEL') || getenv('VERCEL_ENV') || isset($_ENV['VERCEL']) || isset($_ENV['VERCEL_ENV']) || isset($_SERVER['VERCEL'])) {
