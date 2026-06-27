@@ -129,9 +129,10 @@
             </div>
           @endif
 
-          @if(session('error'))
+          @if(session('error') || request('error') == 'file_too_large')
             <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm" role="alert">
-              <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ session('error') }}
+              <i class="bi bi-exclamation-triangle-fill me-2"></i> 
+              {{ session('error') ?? 'File yang diupload terlalu besar! (Maksimal 2MB karena batasan serverless).' }}
               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
           @endif

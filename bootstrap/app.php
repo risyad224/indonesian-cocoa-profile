@@ -15,7 +15,9 @@ $app = Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (\Illuminate\Http\Exceptions\PostTooLargeException $e, $request) {
-            return back()->withInput()->with('error', 'File yang diupload terlalu besar! (Maksimal 2MB karena batasan serverless).');
+            $prevUrl = url()->previous();
+            $separator = parse_url($prevUrl, PHP_URL_QUERY) ? '&' : '?';
+            return redirect()->to($prevUrl . $separator . 'error=file_too_large');
         });
     })->create();
 
