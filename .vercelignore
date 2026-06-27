@@ -19,13 +19,7 @@ phpunit.xml
 tests/
 .editorconfig
 .npmrc
-vite.config.js
-package.json
-package-lock.json
-composer.json
-composer.lock
-webpack.mix.js
-tailwind.config.js
+
 storage/logs/*
 storage/framework/cache/*
 storage/framework/views/*
