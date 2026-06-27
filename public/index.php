@@ -23,4 +23,14 @@ require __DIR__.'/../vendor/autoload.php';
 /** @var Application $app */
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
-$app->handleRequest(Request::capture());
+try {
+    $response = $app->handleRequest(Request::capture());
+    $response->send();
+    $app->terminate();
+} catch (\Throwable $e) {
+    echo "<h1>Original Exception:</h1>";
+    echo "<p><strong>Message:</strong> " . $e->getMessage() . "</p>";
+    echo "<p><strong>File:</strong> " . $e->getFile() . " on line " . $e->getLine() . "</p>";
+    echo "<pre>" . $e->getTraceAsString() . "</pre>";
+    exit(1);
+}
