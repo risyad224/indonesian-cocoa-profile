@@ -6,7 +6,7 @@ set -e
 echo "Building Indonesian Cocoa Profile..."
 
 # Install Node dependencies
-npm ci --prefer-offline --no-audit
+npm install --prefer-offline --no-audit
 
 # Build frontend assets with Vite
 npm run build
