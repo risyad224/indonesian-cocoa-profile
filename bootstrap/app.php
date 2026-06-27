@@ -14,12 +14,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->reportable(function (\Throwable $e) {
-            echo "<h1>ACTUAL ORIGINAL ERROR:</h1>";
-            echo "<p>" . $e->getMessage() . "</p>";
-            echo "<pre>" . $e->getTraceAsString() . "</pre>";
-            exit(1);
-        });
+        //
     })->create();
 
 if (isset($_ENV['VERCEL']) || isset($_ENV['VERCEL_ENV']) || isset($_SERVER['VERCEL'])) {
