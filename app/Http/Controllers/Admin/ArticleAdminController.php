@@ -36,8 +36,10 @@ class ArticleAdminController extends Controller
         $data['is_published'] = $request->boolean('is_published');
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('articles', 'public');
-            $data['image'] = $path;
+            $file = $request->file('image');
+            $base64 = base64_encode(file_get_contents($file));
+            $mime = $file->getClientMimeType();
+            $data['image'] = "data:{$mime};base64,{$base64}";
         }
 
         Article::create($data + ['author' => session('admin_name')]);
@@ -64,11 +66,10 @@ class ArticleAdminController extends Controller
         $data['is_published'] = $request->boolean('is_published');
 
         if ($request->hasFile('image')) {
-            if ($article->image) {
-                Storage::disk('public')->delete($article->image);
-            }
-            $path = $request->file('image')->store('articles', 'public');
-            $data['image'] = $path;
+            $file = $request->file('image');
+            $base64 = base64_encode(file_get_contents($file));
+            $mime = $file->getClientMimeType();
+            $data['image'] = "data:{$mime};base64,{$base64}";
         } else {
             unset($data['image']);
         }
@@ -80,9 +81,7 @@ class ArticleAdminController extends Controller
 
     public function destroy(Article $article)
     {
-        if ($article->image) {
-            Storage::disk('public')->delete($article->image);
-        }
+        // Vercel Base64 handling - no file to delete on disk
         $article->delete();
         return redirect()->route('admin.articles.index')->with('success', 'Artikel dihapus');
     }

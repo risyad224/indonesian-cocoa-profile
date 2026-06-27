@@ -36,7 +36,10 @@ class CompanyProfileAdminController extends Controller
         $data['is_active'] = $request->boolean('is_active');
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('company_profiles', 'public');
+            $file = $request->file('image');
+            $base64 = base64_encode(file_get_contents($file));
+            $mime = $file->getClientMimeType();
+            $data['image'] = "data:{$mime};base64,{$base64}";
         }
 
         CompanyProfile::create($data);
@@ -65,10 +68,10 @@ class CompanyProfileAdminController extends Controller
         $data['is_active'] = $request->boolean('is_active');
 
         if ($request->hasFile('image')) {
-            if ($companyProfile->image) {
-                Storage::disk('public')->delete($companyProfile->image);
-            }
-            $data['image'] = $request->file('image')->store('company_profiles', 'public');
+            $file = $request->file('image');
+            $base64 = base64_encode(file_get_contents($file));
+            $mime = $file->getClientMimeType();
+            $data['image'] = "data:{$mime};base64,{$base64}";
         } else {
             unset($data['image']);
         }
@@ -80,9 +83,7 @@ class CompanyProfileAdminController extends Controller
 
     public function destroy(CompanyProfile $companyProfile)
     {
-        if ($companyProfile->image) {
-            Storage::disk('public')->delete($companyProfile->image);
-        }
+        // Vercel Base64 handling - no file to delete on disk
 
         $companyProfile->delete();
 

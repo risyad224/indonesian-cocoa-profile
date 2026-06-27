@@ -30,7 +30,7 @@
   <div class="mb-3">
     <label class="form-label">Image</label>
     <input type="file" name="image" class="form-control">
-    @if($product->image)<img src="{{ asset('storage/' . $product->image) }}" class="mt-2" style="max-width:150px">@endif
+    @if($product->image)<img src="{{ $product->image }}" class="mt-2" style="max-width:150px">@endif
     @error('image')<div class="text-danger">{{ $message }}</div>@enderror
   </div>
   <div class="form-check mb-3">

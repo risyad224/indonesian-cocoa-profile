@@ -19,7 +19,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="card card-cocoa">
-                    <img src="{{ asset($article->image) }}" class="card-img-top" alt="{{ $article->title }}" style="max-height: 450px; object-fit: cover;">
+                    <img src="{{ $article->image }}" class="card-img-top" alt="{{ $article->title }}" style="max-height: 450px; object-fit: cover;">
                     <div class="card-body p-5">
                         <p class="lead text-cocoa fw-medium">{{ $article->excerpt }}</p>
                         <hr class="my-4">

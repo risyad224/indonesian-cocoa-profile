@@ -35,7 +35,10 @@ class ProductAdminController extends Controller
         $data['is_featured'] = $request->boolean('is_featured');
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('products', 'public');
+            $file = $request->file('image');
+            $base64 = base64_encode(file_get_contents($file));
+            $mime = $file->getClientMimeType();
+            $data['image'] = "data:{$mime};base64,{$base64}";
         }
 
         Product::create($data);
@@ -62,10 +65,10 @@ class ProductAdminController extends Controller
         $data['is_featured'] = $request->boolean('is_featured');
 
         if ($request->hasFile('image')) {
-            if ($product->image) {
-                Storage::disk('public')->delete($product->image);
-            }
-            $data['image'] = $request->file('image')->store('products', 'public');
+            $file = $request->file('image');
+            $base64 = base64_encode(file_get_contents($file));
+            $mime = $file->getClientMimeType();
+            $data['image'] = "data:{$mime};base64,{$base64}";
         } else {
             unset($data['image']);
         }
@@ -77,9 +80,7 @@ class ProductAdminController extends Controller
 
     public function destroy(Product $product)
     {
-        if ($product->image) {
-            Storage::disk('public')->delete($product->image);
-        }
+        // Vercel Base64 handling - no file to delete on disk
 
         $product->delete();
 
