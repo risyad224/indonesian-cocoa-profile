@@ -85,9 +85,9 @@
           <a href="{{ route('home') }}" class="btn btn-sm btn-outline-light rounded-pill px-3 me-3" target="_blank">
             <i class="bi bi-globe me-1"></i> Lihat Website
           </a>
-          @if(session('admin_name'))
+          @if(auth()->check())
             <span class="navbar-text text-white me-4">
-              <i class="bi bi-person-circle me-1"></i> {{ session('admin_name') }}
+              <i class="bi bi-person-circle me-1"></i> {{ auth()->user()->name }}
             </span>
             <form method="POST" action="{{ route('admin.logout') }}" class="m-0">
               @csrf
@@ -100,7 +100,7 @@
 
     <div class="container-fluid">
       <div class="row">
-        @if(session('admin_name'))
+        @if(auth()->check())
         <div class="col-md-2 d-none d-md-block sidebar p-0">
           <div class="list-group list-group-flush">
             <a href="{{ route('admin.dashboard') }}" class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">

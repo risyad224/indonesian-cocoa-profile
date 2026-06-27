@@ -22,18 +22,12 @@ class ArticleAdminController extends Controller
         return view('admin.articles.create');
     }
 
-    public function store(Request $request)
+    public function store(\App\Http\Requests\StoreArticleRequest $request)
     {
-        $data = $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|unique:articles,slug',
-            'excerpt' => 'required|string',
-            'content' => 'required|string',
-            'image' => 'nullable|image|max:2048',
-            'is_published' => 'nullable|boolean',
-        ]);
-
+        $data = $request->validated();
         $data['is_published'] = $request->boolean('is_published');
+        $data['published_at'] = $data['is_published'] ? now() : null;
+        $data['author'] = auth()->user()->name ?? 'Admin';
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
@@ -42,9 +36,7 @@ class ArticleAdminController extends Controller
             $data['image'] = "data:{$mime};base64,{$base64}";
         }
 
-        $data['published_at'] = $request->boolean('is_published') ? now() : null;
-
-        Article::create($data + ['author' => session('admin_name')]);
+        Article::create($data);
 
         return redirect()->route('admin.articles.index')->with('success', 'Artikel dibuat');
     }
@@ -54,17 +46,9 @@ class ArticleAdminController extends Controller
         return view('admin.articles.edit', compact('article'));
     }
 
-    public function update(Request $request, Article $article)
+    public function update(\App\Http\Requests\UpdateArticleRequest $request, Article $article)
     {
-        $data = $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|unique:articles,slug,' . $article->id,
-            'excerpt' => 'required|string',
-            'content' => 'required|string',
-            'image' => 'nullable|image|max:2048',
-            'is_published' => 'nullable|boolean',
-        ]);
-
+        $data = $request->validated();
         $data['is_published'] = $request->boolean('is_published');
 
         if ($request->hasFile('image')) {
@@ -76,7 +60,7 @@ class ArticleAdminController extends Controller
             unset($data['image']);
         }
 
-        if ($request->boolean('is_published') && !$article->published_at) {
+        if ($data['is_published'] && !$article->published_at) {
             $data['published_at'] = now();
         }
 
@@ -94,7 +78,7 @@ class ArticleAdminController extends Controller
 
     public function exportPdf()
     {
-        $articles = Article::all();
+        $articles = Article::select('id', 'title', 'excerpt', 'author', 'created_at', 'published_at', 'is_published')->get();
         $pdf = Pdf::loadView('admin.articles.pdf', compact('articles'));
         return $pdf->download('articles.pdf');
     }

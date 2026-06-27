@@ -10,7 +10,7 @@ class AdminMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (!Session::has('admin_id')) {
+        if (!\Illuminate\Support\Facades\Auth::check()) {
             return redirect()->route('admin.login');
         }
 

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class ProductAdminController extends Controller
@@ -21,17 +23,9 @@ class ProductAdminController extends Controller
         return view('admin.products.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
-            'description' => 'required|string',
-            'specification' => 'nullable|string',
-            'image' => 'nullable|image|max:2048',
-            'is_featured' => 'nullable|boolean',
-        ]);
-
+        $data = $request->validated();
         $data['is_featured'] = $request->boolean('is_featured');
 
         if ($request->hasFile('image')) {
@@ -43,7 +37,7 @@ class ProductAdminController extends Controller
 
         Product::create($data);
 
-        return redirect()->route('admin.products.index')->with('success', 'Produk dibuat');
+        return redirect()->route('admin.products.index')->with('success', 'Produk ditambahkan');
     }
 
     public function edit(Product $product)
@@ -51,17 +45,9 @@ class ProductAdminController extends Controller
         return view('admin.products.edit', compact('product'));
     }
 
-    public function update(Request $request, Product $product)
+    public function update(UpdateProductRequest $request, Product $product)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
-            'description' => 'required|string',
-            'specification' => 'nullable|string',
-            'image' => 'nullable|image|max:2048',
-            'is_featured' => 'nullable|boolean',
-        ]);
-
+        $data = $request->validated();
         $data['is_featured'] = $request->boolean('is_featured');
 
         if ($request->hasFile('image')) {
@@ -89,7 +75,7 @@ class ProductAdminController extends Controller
 
     public function exportPdf()
     {
-        $products = Product::all();
+        $products = Product::select('id', 'name', 'category', 'description', 'is_featured', 'created_at')->get();
         $pdf = Pdf::loadView('admin.products.pdf', compact('products'));
         return $pdf->download('products.pdf');
     }

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\CompanyProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\StoreCompanyProfileRequest;
+use App\Http\Requests\UpdateCompanyProfileRequest;
 
 class CompanyProfileAdminController extends Controller
 {
@@ -20,19 +22,9 @@ class CompanyProfileAdminController extends Controller
         return view('admin.company_profiles.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreCompanyProfileRequest $request)
     {
-        $data = $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|unique:company_profiles,slug',
-            'excerpt' => 'nullable|string',
-            'content' => 'nullable|string',
-            'vision' => 'nullable|string',
-            'mission' => 'nullable|string',
-            'image' => 'nullable|image|max:2048',
-            'is_active' => 'nullable|boolean',
-        ]);
-
+        $data = $request->validated();
         $data['is_active'] = $request->boolean('is_active');
 
         if ($request->hasFile('image')) {
@@ -44,7 +36,7 @@ class CompanyProfileAdminController extends Controller
 
         CompanyProfile::create($data);
 
-        return redirect()->route('admin.company-profiles.index')->with('success', 'Profil perusahaan dibuat');
+        return redirect()->route('admin.company-profiles.index')->with('success', 'Profil dibuat');
     }
 
     public function edit(CompanyProfile $companyProfile)
@@ -52,19 +44,9 @@ class CompanyProfileAdminController extends Controller
         return view('admin.company_profiles.edit', compact('companyProfile'));
     }
 
-    public function update(Request $request, CompanyProfile $companyProfile)
+    public function update(UpdateCompanyProfileRequest $request, CompanyProfile $companyProfile)
     {
-        $data = $request->validate([
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|unique:company_profiles,slug,' . $companyProfile->id,
-            'excerpt' => 'nullable|string',
-            'content' => 'nullable|string',
-            'vision' => 'nullable|string',
-            'mission' => 'nullable|string',
-            'image' => 'nullable|image|max:2048',
-            'is_active' => 'nullable|boolean',
-        ]);
-
+        $data = $request->validated();
         $data['is_active'] = $request->boolean('is_active');
 
         if ($request->hasFile('image')) {
@@ -78,7 +60,7 @@ class CompanyProfileAdminController extends Controller
 
         $companyProfile->update($data);
 
-        return redirect()->route('admin.company-profiles.index')->with('success', 'Profil perusahaan diperbarui');
+        return redirect()->route('admin.company-profiles.index')->with('success', 'Profil diperbarui');
     }
 
     public function destroy(CompanyProfile $companyProfile)

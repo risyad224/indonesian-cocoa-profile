@@ -11,7 +11,7 @@ class AdminAuthController extends Controller
 {
     public function showLogin()
     {
-        if (Session::has('admin_id')) {
+        if (\Illuminate\Support\Facades\Auth::check()) {
             return redirect()->route('admin.dashboard');
         }
         return view('admin.login');
@@ -19,26 +19,24 @@ class AdminAuthController extends Controller
 
     public function login(Request $request)
     {
-        $data = $request->validate([
+        $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
-        $user = User::where('email', $data['email'])->first();
-
-        if (!$user || !Hash::check($data['password'], $user->password)) {
-            return back()->withErrors(['email' => 'Email atau password salah'])->withInput();
+        if (\Illuminate\Support\Facades\Auth::attempt($credentials, $request->boolean('remember'))) {
+            $request->session()->regenerate();
+            return redirect()->route('admin.dashboard');
         }
 
-        Session::put('admin_id', $user->id);
-        Session::put('admin_name', $user->name);
-
-        return redirect()->route('admin.dashboard');
+        return back()->withErrors(['email' => 'Email atau password salah'])->withInput();
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        Session::forget(['admin_id', 'admin_name']);
+        \Illuminate\Support\Facades\Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect()->route('admin.login');
     }
 }
