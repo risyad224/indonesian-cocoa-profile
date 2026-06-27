@@ -1,6 +1,7 @@
 {
   "version": 2,
   "framework": null,
+  "outputDirectory": "public",
   "buildCommand": "npm install --include=dev && npm run build",
   "functions": {
     "api/*.php": {
@@ -10,20 +11,7 @@
   },
   "routes": [
     {
-      "src": "/(build|images|bootstrap-5\\.3\\.8-dist)/(.*)",
-      "dest": "/public/$1/$2"
-    },
-    {
-      "src": "/(favicon\\.ico|robots\\.txt)",
-      "dest": "/public/$1"
-    },
-    {
-      "src": "/storage/(.*)",
-      "dest": "/storage/$1"
-    },
-    {
-      "src": "/bootstrap/cache/(.*)",
-      "dest": "/bootstrap/cache/$1"
+      "handle": "filesystem"
     },
     {
       "src": "/(.*)",
