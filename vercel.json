@@ -30,7 +30,7 @@
     "APP_KEY": "base64:sSjbtRK/7m2J+O25p3GW/khZhlXhUFWBkAbbJLCDfDI=",
     "APP_NAME": "Indonesian Cocoa Profile",
     "APP_ENV": "production",
-    "APP_DEBUG": "true",
+    "APP_DEBUG": "false",
     "APP_URL": "https://indonesian-cocoa-profile.vercel.app",
     "LOG_CHANNEL": "stderr",
     "VERCEL": "1",
