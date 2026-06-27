@@ -5,14 +5,14 @@ set -e
 
 echo "Building Indonesian Cocoa Profile..."
 
-# Install PHP dependencies
-composer install --no-dev --optimize-autoloader
-
 # Install Node dependencies
 npm ci --prefer-offline --no-audit
 
 # Build frontend assets with Vite
 npm run build
+
+# Install PHP dependencies
+composer install --no-dev --optimize-autoloader
 
 # Clear Laravel cache
 php artisan config:clear

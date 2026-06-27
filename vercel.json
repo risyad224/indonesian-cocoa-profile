@@ -1,7 +1,7 @@
 {
   "version": 2,
   "framework": null,
-  "buildCommand": "npm run build",
+  "buildCommand": "npm ci && npm run build && composer install --no-dev --optimize-autoloader",
   "functions": {
     "api/*.php": {
       "runtime": "vercel-php@0.9.0",
@@ -32,7 +32,8 @@
   },
   "build": {
     "env": {
-      "SKIP_ENV_VALIDATION": "true"
+      "SKIP_ENV_VALIDATION": "true",
+      "NODE_ENV": "production"
     }
   }
 }
