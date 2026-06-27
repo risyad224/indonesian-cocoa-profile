@@ -82,6 +82,9 @@
           <i class="bi bi-box-seam me-2"></i>Admin Panel
         </a>
         <div class="d-flex align-items-center">
+          <a href="{{ route('home') }}" class="btn btn-sm btn-outline-light rounded-pill px-3 me-3" target="_blank">
+            <i class="bi bi-globe me-1"></i> Lihat Website
+          </a>
           @if(session('admin_name'))
             <span class="navbar-text text-white me-4">
               <i class="bi bi-person-circle me-1"></i> {{ session('admin_name') }}
