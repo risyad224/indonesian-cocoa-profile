@@ -42,6 +42,8 @@ class ArticleAdminController extends Controller
             $data['image'] = "data:{$mime};base64,{$base64}";
         }
 
+        $data['published_at'] = $request->boolean('is_published') ? now() : null;
+
         Article::create($data + ['author' => session('admin_name')]);
 
         return redirect()->route('admin.articles.index')->with('success', 'Artikel dibuat');
@@ -72,6 +74,10 @@ class ArticleAdminController extends Controller
             $data['image'] = "data:{$mime};base64,{$base64}";
         } else {
             unset($data['image']);
+        }
+
+        if ($request->boolean('is_published') && !$article->published_at) {
+            $data['published_at'] = now();
         }
 
         $article->update($data);

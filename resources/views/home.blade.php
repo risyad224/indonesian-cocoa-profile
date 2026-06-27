@@ -128,7 +128,7 @@
                 <div class="card card-cocoa h-100">
                     <img src="{{ $article->image }}" class="card-img-top" alt="{{ $article->title }}">
                     <div class="card-body p-4">
-                        <small class="text-muted"><i class="bi bi-calendar me-1"></i> {{ $article->published_at->format('d M Y') }}</small>
+                        <small class="text-muted"><i class="bi bi-calendar me-1"></i> {{ ($article->published_at ?? $article->created_at)->format('d M Y') }}</small>
                         <h5 class="card-title fw-bold text-cocoa mt-2">{{ $article->title }}</h5>
                         <p class="card-text text-muted">{{ Str::limit($article->excerpt, 80) }}</p>
                         <a href="{{ route('article.show', $article->slug) }}" class="btn btn-outline-cocoa btn-sm">Baca Selengkapnya</a>

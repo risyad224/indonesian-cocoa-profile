@@ -20,7 +20,7 @@
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <small class="text-muted"><i class="bi bi-person me-1"></i> {{ $article->author }}</small>
-                            <small class="text-muted"><i class="bi bi-calendar me-1"></i> {{ $article->published_at->format('d M Y') }}</small>
+                            <small class="text-muted"><i class="bi bi-calendar me-1"></i> {{ ($article->published_at ?? $article->created_at)->format('d M Y') }}</small>
                         </div>
                         <h5 class="card-title fw-bold text-cocoa">{{ $article->title }}</h5>
                         <p class="card-text text-muted">{{ Str::limit($article->excerpt, 100) }}</p>

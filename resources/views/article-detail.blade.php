@@ -9,7 +9,7 @@
         <h1 class="display-6 fw-bold">{{ $article->title }}</h1>
         <div class="d-flex justify-content-center gap-4 mt-3 opacity-75">
             <span><i class="bi bi-person me-1"></i> {{ $article->author }}</span>
-            <span><i class="bi bi-calendar me-1"></i> {{ $article->published_at->format('d F Y') }}</span>
+            <span><i class="bi bi-calendar me-1"></i> {{ ($article->published_at ?? $article->created_at)->format('d F Y') }}</span>
         </div>
     </div>
 </section>
